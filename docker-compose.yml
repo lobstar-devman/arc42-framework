@@ -1,0 +1,24 @@
+name: architecter-BPMN-DMN-CMMN
+
+services:
+  architecting-toolkit:
+    build: .
+    image: architecting-toolkit:latest
+    container_name: architecting-toolkit
+    ports:
+      - "8000:8000"
+    volumes:
+      # Bind mount: the project on the host (sources of truth, mkdocs.yml,
+      # docs/, CI scripts) is mapped straight into the container. Edits on
+      # either side are reflected immediately — no rebuild needed to pick
+      # up changes to BPMN/DMN/CMMN XML, Structurizr DSL, OpenAPI, JSON
+      # Schema, Mermaid files, or the MkDocs content itself.
+      - type: bind
+        source: ./workspace
+        target: /workspace
+    working_dir: /workspace
+    # Default command serves the docs site with live reload.
+    # Swap this out (or use `docker compose run`) to instead run a
+    # validation/regeneration step, e.g.:
+    #   docker compose run --rm architecting-toolkit scripts/generate-docs.sh
+    command: ["mkdocs", "serve", "-a", "0.0.0.0:8000"]
