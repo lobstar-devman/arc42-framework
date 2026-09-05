@@ -72,7 +72,10 @@ RUN mkdir -p /opt/structurizr-cli \
 # This directory is where the bind-mounted project lands (see docker-compose.yml).
 WORKDIR /workspace
 
-EXPOSE 8000
+# 8000: rendered MkDocs Material site (for humans/browsers).
+# 8001: raw project tree over plain HTTP (for implementation-stack agents —
+# see docker-compose.yml's architecting-toolkit-raw service).
+EXPOSE 8000 8001
 
 # Default action: serve the MkDocs Material site.
 # Override with `docker run ... <image> <command>` to instead run validation
@@ -83,4 +86,5 @@ EXPOSE 8000
 #   xmllint --noout --schema bpmn20.xsd process.bpmn
 #   ajv validate -s schema.json -d data.json
 #   redocly lint openapi.yaml
+#   python3 -m http.server 8001 --bind 0.0.0.0   # raw file serving, no rendering
 CMD ["mkdocs", "serve", "-a", "0.0.0.0:8000"]

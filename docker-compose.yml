@@ -1,5 +1,13 @@
 name: architecter-BPMN-DMN-CMMN
 
+# `arc42-docs-net` is external so a separate implementation-side compose
+# stack can join it and reach these containers by name (rather than via
+# published host ports or host.docker.internal). Create it once with:
+#   docker network create arc42-docs-net
+networks:
+  arc42-docs-net:
+    external: true
+
 services:
   architecting-toolkit:
     build: .
@@ -17,8 +25,33 @@ services:
         source: ./workspace
         target: /workspace
     working_dir: /workspace
-    # Default command serves the docs site with live reload.
-    # Swap this out (or use `docker compose run`) to instead run a
-    # validation/regeneration step, e.g.:
+    networks:
+      - arc42-docs-net
+    # Default command serves the rendered docs site with live reload, for
+    # humans in a browser. Swap this out (or use `docker compose run`) to
+    # instead run a validation/regeneration step, e.g.:
     #   docker compose run --rm architecting-toolkit scripts/generate-docs.sh
     command: ["mkdocs", "serve", "-a", "0.0.0.0:8000"]
+
+  architecting-toolkit-raw:
+    build: .
+    image: architecting-toolkit:latest
+    container_name: architecting-toolkit-raw
+    ports:
+      - "8001:8001"
+    volumes:
+      - type: bind
+        source: ./workspace
+        target: /workspace
+    working_dir: /workspace
+    networks:
+      - arc42-docs-net
+    # Serves the whole project tree as plain static files — the docs
+    # markdown, generated diagram SVGs, and every sources-of-truth
+    # directory (processes/, architecture/, apis/, data-model/, data/)
+    # as-is, no HTML/theme wrapper. This is what a separate implementation
+    # stack should read from: it can fetch a page's raw markdown and, for
+    # any embedded diagram, resolve and fetch the source-of-truth file it
+    # was generated from instead of the SVG. See
+    # workspace/docs/sources-of-truth/index.md for the path convention.
+    command: ["python3", "-m", "http.server", "8001", "--bind", "0.0.0.0"]
