@@ -1,4 +1,4 @@
-name: architecter-BPMN-DMN-CMMN
+name: arc42-framework
 
 # `arc42-docs-net` is external so a separate implementation-side compose
 # stack can join it and reach these containers by name (rather than via
