@@ -23,6 +23,26 @@ HOME_REDIRECT = "/docs/index.md"
 
 
 class RawHandler(http.server.SimpleHTTPRequestHandler):
+    # Every file in this project is authored as UTF-8 text. The stdlib's
+    # extensions_map doesn't know most of these extensions (.md especially)
+    # and falls back to `application/octet-stream` with no charset, which
+    # left clients guessing the byte encoding and mangling non-ASCII
+    # characters (em dashes, etc.) as mojibake. Declare UTF-8 explicitly.
+    extensions_map = {
+        **http.server.SimpleHTTPRequestHandler.extensions_map,
+        "": "text/plain; charset=utf-8",
+        ".md": "text/markdown; charset=utf-8",
+        ".mmd": "text/plain; charset=utf-8",
+        ".dsl": "text/plain; charset=utf-8",
+        ".yaml": "application/yaml; charset=utf-8",
+        ".yml": "application/yaml; charset=utf-8",
+        ".json": "application/json; charset=utf-8",
+        ".bpmn": "application/xml; charset=utf-8",
+        ".cmmn": "application/xml; charset=utf-8",
+        ".dmn": "application/xml; charset=utf-8",
+        ".svg": "image/svg+xml; charset=utf-8",
+    }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=ROOT, **kwargs)
 
