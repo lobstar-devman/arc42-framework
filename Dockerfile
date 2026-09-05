@@ -68,6 +68,12 @@ RUN mkdir -p /opt/structurizr-cli \
     && chmod +x /opt/structurizr-cli/structurizr.sh \
     && ln -s /opt/structurizr-cli/structurizr.sh /usr/local/bin/structurizr-cli
 
+# ---- Raw file server (port 8001) -----------------------------------------
+# Serves /workspace as-is for implementation-stack agents: '/' redirects to
+# docs/index.md, and top-level toolkit files (AGENTS.md, CLAUDE.md, etc.)
+# are denied. See docker-compose.yml's architecting-toolkit-raw service.
+COPY serve-raw.py /usr/local/bin/serve-raw.py
+
 # ---- Workspace -------------------------------------------------------------
 # This directory is where the bind-mounted project lands (see docker-compose.yml).
 WORKDIR /workspace
@@ -86,5 +92,5 @@ EXPOSE 8000 8001
 #   xmllint --noout --schema bpmn20.xsd process.bpmn
 #   ajv validate -s schema.json -d data.json
 #   redocly lint openapi.yaml
-#   python3 -m http.server 8001 --bind 0.0.0.0   # raw file serving, no rendering
+#   python3 /usr/local/bin/serve-raw.py 8001   # raw file serving, no rendering
 CMD ["mkdocs", "serve", "-a", "0.0.0.0:8000"]

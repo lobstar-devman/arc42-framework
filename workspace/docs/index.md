@@ -27,7 +27,13 @@ same paths, unrendered — on port 8001 (e.g. this page is
 `GET /docs/index.md`, [Sources of Truth](sources-of-truth/index.md) is
 `GET /docs/sources-of-truth/index.md`), alongside every source-of-truth
 directory (`processes/`, `architecture/`, `apis/`, `data-model/`,
-`data/`) that lives outside `docs/` entirely.
+`data/`) that lives outside `docs/` entirely. `GET /` on that port
+redirects straight to `/docs/index.md` (this page) rather than listing
+the workspace root. Toolkit-authoring files sitting directly at the
+workspace root (`AGENTS.md`, `CLAUDE.md`, `architecting-agent.md`,
+`mkdocs.yml`) are not served there — only `docs/` and the
+sources-of-truth directories are; those files are how the toolkit is
+authored, not part of the architecture you're implementing.
 
 When a page embeds a generated diagram (a `docs/diagrams/**/*.svg`),
 don't consume the SVG — it's a rendering. Resolve it to the
