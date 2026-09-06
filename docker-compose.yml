@@ -58,3 +58,21 @@ services:
     # CLAUDE.md, architecting-agent.md, mkdocs.yml) are denied — see
     # serve-raw.py.
     command: ["python3", "/usr/local/bin/serve-raw.py", "8001"]
+
+  architecting-toolkit-watch:
+    build: .
+    image: architecting-toolkit:latest
+    container_name: architecting-toolkit-watch
+    volumes:
+      - type: bind
+        source: ./workspace
+        target: /workspace
+    working_dir: /workspace
+    networks:
+      - arc42-docs-net
+    # No port: this serves nothing, it just keeps the docs "living". Runs
+    # scripts/generate-docs.sh once, then re-runs it whenever a
+    # source-of-truth file changes anywhere except docs/ (mkdocs serve,
+    # in the architecting-toolkit service, already watches docs/ itself
+    # and reloads once this writes into it).
+    command: ["bash", "scripts/watch-and-generate.sh"]

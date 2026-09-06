@@ -52,6 +52,8 @@ On every change to a source-of-truth file, CI:
 
 No diagram or doc page is ever committed as a manually edited artifact — only the source-of-truth files and the pipeline configuration are hand-authored.
 
+**In local dev, steps 1–3 already run continuously.** `docker compose up` starts an `architecting-toolkit-watch` service that runs `scripts/generate-docs.sh` once, then re-runs it whenever a source-of-truth file changes anywhere except `docs/` itself. `mkdocs serve` (in the `architecting-toolkit` service) picks up the resulting `docs/` changes on its own and live-reloads. So editing a `.dsl`/`.bpmn`/`.mmd`/etc. file while the stack is up regenerates its diagram and re-links its embed automatically, with no manual step — the CI pipeline above isn't only a remote/future concept.
+
 ## Working rule for each architecture step
 
 When performing an architecture step (e.g. database design, process modeling):
