@@ -16,7 +16,7 @@ _Generated from DMN decision tables via bpmn.io tooling._
 
 ## Security, Persistence, and other cross-cutting concerns
 _Free text, hand-authored, linking out to the relevant source-of-truth
-diagrams above._
+diagrams above, and following the [Documentation Style Guide](../style-guide.md)._
 
 **Sources of truth:** `data-model/*.mmd` or `data-model/schema.sql`,
 `decisions/*.dmn`.

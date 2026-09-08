@@ -9,11 +9,43 @@ diagrammable source of truth).
 
 ## Log
 
-_No decisions recorded yet._
-
 | # | Title | Status | Date |
 |---|---|---|---|
-| _ADR-001_ | _title_ | _proposed / accepted / superseded_ | _YYYY-MM-DD_ |
+| [ADR-001](#adr-001-adopt-mdns-technical-writing-guidance-as-the-documentation-style-guide) | Adopt MDN's technical writing guidance as the documentation style guide | accepted | 2026-09-08 |
+
+### ADR-001: Adopt MDN's technical writing guidance as the documentation style guide
+
+**Status:** accepted
+**Date:** 2026-09-08
+
+#### Context
+
+Hand-authored prose on this site — the Home page, the Sources of Truth
+overviews, ADR entries, and free-text cross-cutting sections — had no
+shared writing convention. As more pages accumulate from different
+authors, human and agent, tone, terminology, and structure risk drifting
+apart, which makes the site slower to read and harder to trust.
+
+#### Decision
+
+Adopt the guidance from MDN's
+[technical writing blog post](https://developer.mozilla.org/en-US/blog/technical-writing/)
+as this project's documentation style guide, captured in
+[style-guide.md](../style-guide.md). It covers clarity, conciseness, and
+consistency; page structure (introduction, then what → why → how);
+worked examples; list, link, and image formatting; inclusive language;
+and a proofreading pass before publishing. The guide applies only to
+hand-authored prose — generated content (BPMN/CMMN/DMN labels, OpenAPI
+descriptions, Structurizr DSL element names, Mermaid node text) follows
+its own source-of-truth format's conventions instead.
+
+#### Consequences
+
+Hand-authored pages gain a consistent voice and structure, and authors
+spend less time deciding how to phrase a page from scratch. The
+trade-off is one more document to keep current if MDN revises its
+guidance, and a small upfront cost for new contributors to read the
+guide before writing their first prose page.
 
 ## Template
 

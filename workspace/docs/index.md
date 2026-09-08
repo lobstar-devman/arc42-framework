@@ -12,6 +12,8 @@ change something, edit the source of truth — see
 
 ## Contents
 
+- [Documentation Style Guide](style-guide.md) — the writing conventions
+  every hand-authored page on this site follows.
 - [Architecture (arc42)](arc42/01-introduction-and-goals.md) — the full
   arc42-structured architecture description.
 - [Sources of Truth](sources-of-truth/index.md) — what format is used for
