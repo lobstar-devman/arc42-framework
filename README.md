@@ -30,3 +30,10 @@ ssh-add C:\Users\<you>\.ssh\id_ed25519
 ```
 
 With the agent running and the key added, VS Code forwards it automatically into any container it connects to (reopen or attach, no compose changes needed) — no key file, not even a copy, ever touches the container's disk. This only covers terminals VS Code itself opens after connecting; a plain `docker exec` from PowerShell won't see the forwarded agent.
+
+To avoid typing ssh-add manually each time, add this to `C:\Users\<you>\.ssh\config`:
+
+```
+Host *
+    AddKeysToAgent yes
+```    
