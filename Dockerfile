@@ -58,6 +58,16 @@ RUN npm install -g \
         redoc-cli \
         ajv-cli
 
+# bpmn-to-image launches Puppeteer/Chromium with no args and no CLI or env
+# flag to add any (unlike mmdc's -p config, see generate-docs.sh). This
+# container always runs it as root, and Chromium refuses its own sandbox
+# under root without --no-sandbox - so patch the one hardcoded
+# puppeteer.launch() call rather than run the whole image as a less
+# capable user just for this one tool.
+RUN sed -i "s/headless: 'new'/headless: 'new', args: ['--no-sandbox']/" \
+        /usr/lib/node_modules/bpmn-to-image/index.js \
+    && grep -q -- "--no-sandbox" /usr/lib/node_modules/bpmn-to-image/index.js
+
 # ---- Structurizr CLI (C4 model diagrams from Structurizr DSL) ------------
 ARG STRUCTURIZR_CLI_VERSION=2025.11.09
 RUN mkdir -p /opt/structurizr-cli \
