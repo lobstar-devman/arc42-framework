@@ -40,6 +40,7 @@ Use the real standard format wherever good open tooling exists. Fall back to a p
 - arc42 supplies the section structure (context & scope, building block view, runtime view, deployment view, cross-cutting concepts, decisions/ADRs, quality requirements, risks, glossary).
 - C4 model supplies the system-structure diagrams (context/container/component) within that structure, generated from Structurizr DSL.
 - Jupyter and marimo are **not** part of the documentation backbone. marimo may optionally be used for a standalone interactive artifact (e.g. a DMN decision-table simulator exported to WASM and embedded via iframe) — an enhancement, never the source of truth or the primary deliverable.
+- Hand-authored prose within this framework (Home, Sources of Truth pages, ADR entries, arc42 free-text sections) follows `docs/style-guide.md`, adopted per ADR-001 — the single source of truth for writing conventions, not duplicated here.
 
 ## CI pipeline
 
