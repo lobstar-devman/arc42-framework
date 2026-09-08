@@ -1,6 +1,6 @@
 ---
 name: new-project-from-template
-description: Bootstraps a brand-new project repository from this arc42-framework architecting toolkit -- exports the current toolkit tree with no shared git history, renames every toolkit/container identifier (Docker Compose project name, image tag, all three container names, the external network name, the devcontainer name) to a new project's own prefix, then commits and pushes to an empty remote repo the user provides. Use this whenever the user wants to start a new project, system, or service using this toolkit as a template -- phrases like "set up a new project from this framework", "spin up a new architecting stack for X", "init a new repo from this toolkit", "I want to use this repo to start project Y", or "create a new docker stack based on arc42-framework" should all trigger it, even if the user doesn't say "template" or name this skill explicitly.
+description: Bootstraps a brand-new project repository from this arc42-framework architecting toolkit -- exports the current toolkit tree with no shared git history, renames every toolkit/container identifier (Docker Compose project name, image tag, all three container names, the external network name, the devcontainer name) to a new project's own prefix, commits and pushes to an empty remote repo the user provides, then creates the external Docker network and brings the renamed stack up with a health check. Use this whenever the user wants to start a new project, system, or service using this toolkit as a template -- phrases like "set up a new project from this framework", "spin up a new architecting stack for X", "init a new repo from this toolkit", "I want to use this repo to start project Y", or "create a new docker stack based on arc42-framework" should all trigger it, even if the user doesn't say "template" or name this skill explicitly.
 ---
 
 # New project from the arc42-framework template
@@ -129,12 +129,27 @@ URL was mistyped.
    Use the same commit-attribution footer this session's other commits
    use, if one is configured.
 
-5. **Report back:** the new repo's remote URL, the local path, and the
-   next manual step the user still needs to do themselves before `docker
-   compose up` works -- creating the external network with the *new*
-   prefix, e.g. `docker network create <prefix>-docs-net` (this is a
-   one-time-per-machine step; it isn't part of a git repo and can't be
-   scripted into the commit).
+5. **Bring the stack up.** The compose file needs its external network to
+   exist before `docker compose up` will work -- that's a one-time,
+   per-machine, non-git thing (a `docker network create` isn't part of any
+   repo and can't be committed), so don't leave it as a manual step for the
+   user to remember; do it as part of this skill, the same way you'd do it
+   for your own use:
+   ```
+   cd <destination>
+   docker network inspect <prefix>-docs-net >/dev/null 2>&1 || docker network create <prefix>-docs-net
+   docker compose build
+   docker compose up -d
+   ```
+   Then do a basic health check before declaring success rather than just
+   trusting the exit code -- e.g. `curl -s -o /dev/null -w '%{http_code}'
+   http://localhost:8000/` should be `200`, and the raw endpoint
+   (`:8001/`) should redirect. If either container fails to start, look at
+   `docker compose logs` before reporting anything as done.
+
+6. **Report back:** the new repo's remote URL, the local path, whether the
+   network already existed or was just created, and that the stack is up
+   and responding at `localhost:8000` (rendered) / `localhost:8001` (raw).
 
    Also mention explicitly that this new repo now has **zero shared git
    history** with arc42-framework -- future improvements to the toolkit
