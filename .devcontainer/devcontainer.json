@@ -1,0 +1,29 @@
+{
+	"name": "arc42-framework",
+
+	// Attaches to the existing docker-compose.yml rather than a fresh
+	// devcontainer-only Dockerfile — this is the same image/services the
+	// project already uses for `docker compose up`.
+	"dockerComposeFile": [
+		"../docker-compose.yml"
+	],
+	"service": "architecting-toolkit",
+	"workspaceFolder": "/workspace",
+
+	// Don't stop the compose stack (mkdocs serve, the raw server, the
+	// watch service) when the VS Code window closes — it's meant to keep
+	// running independently of the editor.
+	"shutdownAction": "none",
+
+	"remoteUser": "root",
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"eamodio.gitlens",
+				"yzhang.markdown-all-in-one",
+				"redhat.vscode-yaml"
+			]
+		}
+	}
+}
