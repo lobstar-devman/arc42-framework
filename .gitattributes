@@ -1,0 +1,10 @@
+# Force LF line endings on export/checkout regardless of the local
+# machine's core.autocrlf setting. Without this, `git archive` (used by
+# the new-project-from-template skill to seed a new project with no
+# shared history) converts LF -> CRLF on a Windows machine with
+# core.autocrlf=true, which breaks the bash scripts once they run inside
+# a Linux container -- e.g. a CRLF-corrupted `set -euo pipefail` line
+# fails with "set: pipefail: invalid option name" since bash reads the
+# trailing \r as part of the option name. text=auto still lets git detect
+# genuine binary files (images, etc.) and leaves those untouched.
+* text=auto eol=lf
