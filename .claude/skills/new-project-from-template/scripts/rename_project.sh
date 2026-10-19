@@ -35,6 +35,10 @@
 # more specific "arc42-framework" and "arc42-docs-net" tokens are
 # replaced.
 #
+# Skips .claude/skills/new-project-from-template/ itself: this script and
+# its SKILL.md mention the tokens above as literal text, so rewriting them
+# would corrupt the skill in the new project.
+#
 # Plain bash + sed, not Python: this runs on the *host* machine before the
 # new project's own Docker image (which does have Python) even exists yet,
 # and a bare Windows/macOS/Linux dev machine can't be assumed to have
@@ -80,7 +84,7 @@ while IFS= read -r -d '' f; do
     echo "  - ${f#"$ROOT"/}"
     changed=$((changed + 1))
   fi
-done < <(find "$ROOT" -type f -not -path '*/.git/*' -print0)
+done < <(find "$ROOT" -type f -not -path '*/.git/*' -not -path '*/.claude/skills/new-project-from-template/*' -print0)
 
 if [ "$changed" -eq 0 ]; then
   echo "No files matched any of the tokens -- check --root and that it's really a copy of the arc42-framework toolkit." >&2
