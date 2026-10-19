@@ -20,7 +20,7 @@ trap 'rm -f "$PUPPETEER_CONFIG"' EXIT
 
 render_mermaid() {
   local input="$1" output="$2"
-  mmdc -i "$input" -o "$output" -p "$PUPPETEER_CONFIG" -b transparent
+  mmdc -i "$input" -o "$output" -p "$PUPPETEER_CONFIG" -b white
 }
 
 # The Structurizr CLI release ships as structurizr.sh + lib/*.jar, not a
@@ -82,6 +82,11 @@ echo "==> BPMN process diagrams (processes/*.bpmn)"
 for src in processes/*.bpmn; do
   name="$(basename "$src" .bpmn)"
   bpmn-to-image "$src:$DIAGRAMS_DIR/bpmn/$name.svg"
+  # bpmn-to-image has no background option and emits a transparent SVG, which
+  # is unreadable on the site's dark scheme. Set it on the root element (as
+  # mmdc's -b white does) rather than adding a <rect>: the viewBox doesn't
+  # start at 0,0, so a rect would only partly cover the canvas.
+  sed -i '0,/<svg /s//<svg style="background-color: white" /' "$DIAGRAMS_DIR/bpmn/$name.svg"
   echo "   - bpmn/$name.svg"
 done
 
