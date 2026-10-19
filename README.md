@@ -1,4 +1,44 @@
-# Run it with:
+# Architecting toolkit template
+
+## What this repo is
+
+A template for architecting a system as a living set of documents. It is a Docker stack plus a repo skeleton, built so that each new system gets its **own independent repo and its own Docker stack**, seeded from this one.
+
+- **Documentation:** an [arc42](https://arc42.org)-structured MkDocs Material site, with C4 diagrams. `workspace/architecting-agent.md` defines the conventions.
+- **Sources of truth:** BPMN/CMMN/DMN, Structurizr DSL, OpenAPI, JSON Schema and Mermaid files. Diagrams and pages are generated from them, never hand-edited.
+- **Three containers:** a rendered docs site, a raw-file server for implementation agents, and a watcher that regenerates diagrams when a source changes (see [Run it](#run-it)).
+
+The template's own container, network and project names are placeholders. They're renamed per project when you create a new one, so several projects' stacks can run side by side without colliding. This stack is normally idle; run it only when you're developing the template itself.
+
+## Creating a new project from this template
+
+A Claude Code skill does the whole job, so you don't copy and rename things by hand.
+
+**Where it's defined:** [.claude/skills/new-project-from-template/SKILL.md](.claude/skills/new-project-from-template/SKILL.md), with its rename script at [.claude/skills/new-project-from-template/scripts/rename_project.sh](.claude/skills/new-project-from-template/scripts/rename_project.sh). It's a project-level skill, so it's available whenever this repo is open in Claude Code.
+
+**Before you start:**
+
+1. Create an **empty** repo on your git host (on GitHub: "New repository" with no README, `.gitignore` or license) and copy its clone URL.
+2. Make sure `git`, Docker and a bash shell (Git Bash on Windows) are available.
+
+**How to use it:** open Claude Code in this repo and ask for a new project, for example *"Create a new project called acme-billing from this template"*, or run `/new-project-from-template`. Claude asks for three things, then states the plan and waits for your go-ahead before it writes anything:
+
+| Input | Notes |
+|---|---|
+| Prefix | The project's short name, such as `acme-billing`. Lowercase letters, digits and hyphens only, because Docker image names require that. |
+| Remote URL | The empty repo from step 1. |
+| Destination | Where to create the project locally. Defaults to a sibling folder of this repo, named after the prefix. |
+
+**What it does:**
+
+1. Exports the current tree with `git archive`, so the new repo gets a clean start with none of this repo's history.
+2. Renames the Compose project, image, containers, network and devcontainer to the prefix, using `rename_project.sh`.
+3. Commits, then pushes to your remote as `main`.
+4. Creates the project's `<prefix>-docs-net` network if it's missing, runs `docker compose build` and `up -d`, and health-checks the docs site (port 8000) and the raw server (port 8001).
+
+The new repo shares no git history with this template, so later template improvements don't flow into it automatically.
+
+## Run it
 
 First, one-time only, create the shared network implementation stacks will use to reach these containers:
 
