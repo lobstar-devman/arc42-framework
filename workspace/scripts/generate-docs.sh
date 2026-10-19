@@ -16,7 +16,13 @@ mkdir -p "$DIAGRAMS_DIR/c4" "$DIAGRAMS_DIR/mermaid" "$DIAGRAMS_DIR/erd" "$DIAGRA
 # root without --no-sandbox.
 PUPPETEER_CONFIG="$(mktemp)"
 echo '{"args": ["--no-sandbox"]}' > "$PUPPETEER_CONFIG"
-trap 'rm -f "$PUPPETEER_CONFIG"' EXIT
+# bpmn-to-image takes no Puppeteer config, so give it a Chromium wrapper
+# that adds --no-sandbox itself; without it Chromium refuses to start as
+# root and the BPMN step fails.
+CHROMIUM_NO_SANDBOX="$(mktemp)"
+printf '#!/bin/sh\nexec "%s" --no-sandbox "$@"\n' "${PUPPETEER_EXECUTABLE_PATH:-/usr/bin/chromium}" > "$CHROMIUM_NO_SANDBOX"
+chmod +x "$CHROMIUM_NO_SANDBOX"
+trap 'rm -f "$PUPPETEER_CONFIG" "$CHROMIUM_NO_SANDBOX"' EXIT
 
 render_mermaid() {
   local input="$1" output="$2"
@@ -81,7 +87,7 @@ done
 echo "==> BPMN process diagrams (processes/*.bpmn)"
 for src in processes/*.bpmn; do
   name="$(basename "$src" .bpmn)"
-  bpmn-to-image "$src:$DIAGRAMS_DIR/bpmn/$name.svg"
+  PUPPETEER_EXECUTABLE_PATH="$CHROMIUM_NO_SANDBOX" bpmn-to-image "$src:$DIAGRAMS_DIR/bpmn/$name.svg"
   echo "   - bpmn/$name.svg"
 done
 
