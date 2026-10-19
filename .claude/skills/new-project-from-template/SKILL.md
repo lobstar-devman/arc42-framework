@@ -21,7 +21,7 @@ two parts, and this skill does both:
    project built from this template needs its own prefix baked into those
    identifiers.
 
-## Before you start: gather three things
+## Before you start: gather what you need
 
 Ask the user for whichever of these weren't already given:
 
@@ -44,6 +44,11 @@ Ask the user for whichever of these weren't already given:
    repo is at `.../GitHub/LOBStar/arc42-framework`, default to
    `.../GitHub/LOBStar/<prefix>`. Confirm the default with the user rather
    than assuming it silently.
+
+Also ask for an optional fourth, **`description`** -- one line on what the
+system is (e.g. "Billing and invoicing for Acme's SaaS product"). It goes
+into the new project's README intro; if the user has nothing to say, leave
+it blank rather than inventing one.
 
 Default the branch name to `main` unless told otherwise.
 
@@ -72,7 +77,7 @@ URL was mistyped.
    encodes exactly which tokens are safe to replace and, just as
    important, which one to leave alone:
    ```
-   bash scripts/rename_project.sh --root <destination> --prefix <prefix>
+   bash scripts/rename_project.sh --root <destination> --prefix <prefix> [--description "<one line>"]
    ```
    (Plain bash + sed, not Python -- this runs on the host machine before
    the new project's own Docker image exists, and a bare dev machine can't
@@ -97,6 +102,17 @@ URL was mistyped.
    and every project built from this template should keep following it.
    Read the script's own comments if you want the full reasoning; don't
    re-derive the token list from scratch each time this skill runs.
+
+   The same script also replaces the README's template-only intro (the
+   block between the `<!-- template-intro:start -->` and
+   `<!-- template-intro:end -->` marker comments: "What this repo is" and
+   "Creating a new project") with a short intro for the new project -- its
+   prefix as the title, the description if given, and a line on the
+   toolkit it was built from. Without this the new repo's README would
+   describe itself as the template. Check the script printed "Replaced the
+   template README intro"; if it warned about missing markers instead (an
+   older template export), tell the user the README intro is still the
+   template's rather than silently moving on.
 
    Review the script's printed file list against what you'd expect
    (`docker-compose.yml`, `README.md`, `Dockerfile`,

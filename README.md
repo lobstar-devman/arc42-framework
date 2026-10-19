@@ -1,3 +1,4 @@
+<!-- template-intro:start -->
 # Architecting toolkit template
 
 ## What this repo is
@@ -21,22 +22,24 @@ A Claude Code skill does the whole job, so you don't copy and rename things by h
 1. Create an **empty** repo on your git host (on GitHub: "New repository" with no README, `.gitignore` or license) and copy its clone URL.
 2. Make sure `git`, Docker and a bash shell (Git Bash on Windows) are available.
 
-**How to use it:** open Claude Code in this repo and ask for a new project, for example *"Create a new project called acme-billing from this template"*, or run `/new-project-from-template`. Claude asks for three things, then states the plan and waits for your go-ahead before it writes anything:
+**How to use it:** open Claude Code in this repo and ask for a new project, for example *"Create a new project called acme-billing from this template"*, or run `/new-project-from-template`. Claude asks for the inputs below, then states the plan and waits for your go-ahead before it writes anything:
 
 | Input | Notes |
 |---|---|
 | Prefix | The project's short name, such as `acme-billing`. Lowercase letters, digits and hyphens only, because Docker image names require that. |
 | Remote URL | The empty repo from step 1. |
 | Destination | Where to create the project locally. Defaults to a sibling folder of this repo, named after the prefix. |
+| Description | Optional. One line on what the system is; it goes into the new project's README. |
 
 **What it does:**
 
 1. Exports the current tree with `git archive`, so the new repo gets a clean start with none of this repo's history.
-2. Renames the Compose project, image, containers, network and devcontainer to the prefix, using `rename_project.sh`.
+2. Renames the Compose project, image, containers, network and devcontainer to the prefix, using `rename_project.sh`. It also replaces this template-only intro, the part of the README above "Run it", with a short intro for the new project.
 3. Commits, then pushes to your remote as `main`.
 4. Creates the project's `<prefix>-docs-net` network if it's missing, runs `docker compose build` and `up -d`, and health-checks the docs site (port 8000) and the raw server (port 8001).
 
 The new repo shares no git history with this template, so later template improvements don't flow into it automatically.
+<!-- template-intro:end -->
 
 ## Run it
 

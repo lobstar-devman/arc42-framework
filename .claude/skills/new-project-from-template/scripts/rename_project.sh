@@ -45,14 +45,16 @@
 # python3 on PATH. sed ships with Git Bash / any POSIX system.
 set -euo pipefail
 
-usage() { echo "usage: $0 --root DIR --prefix PREFIX" >&2; exit 2; }
+usage() { echo "usage: $0 --root DIR --prefix PREFIX [--description TEXT]" >&2; exit 2; }
 
 ROOT=""
 PREFIX=""
+DESCRIPTION=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --root) ROOT="$2"; shift 2 ;;
     --prefix) PREFIX="$2"; shift 2 ;;
+    --description) DESCRIPTION="$2"; shift 2 ;;
     *) usage ;;
   esac
 done
@@ -91,3 +93,32 @@ if [ "$changed" -eq 0 ]; then
   exit 1
 fi
 echo "Renamed references in $changed file(s) using prefix '$PREFIX'."
+
+# Replace the template-only README sections ("What this repo is" and
+# "Creating a new project") with a short project intro. They're wrapped in
+# marker comments in the template's README so the swap is exact; the intro
+# is written after the sed pass above, so its literal mention of the
+# template's name isn't rewritten. A missing marker is a warning, not an
+# error -- the rename itself already succeeded.
+README="$ROOT/README.md"
+INTRO_START='<!-- template-intro:start -->'
+INTRO_END='<!-- template-intro:end -->'
+if [ -f "$README" ] && grep -qF "$INTRO_START" "$README" && grep -qF "$INTRO_END" "$README"; then
+  INTRO_FILE="$(mktemp)"
+  {
+    printf '# %s\n\n' "$PREFIX"
+    if [ -n "$DESCRIPTION" ]; then
+      printf '%s\n\n' "$DESCRIPTION"
+    fi
+    printf 'Architecture documentation for this system, generated from its sources of truth (BPMN/CMMN/DMN, Structurizr DSL, OpenAPI, JSON Schema, Mermaid) as an [arc42](https://arc42.org)-structured MkDocs Material site. Conventions are defined in `workspace/architecting-agent.md`. Created from the arc42-framework template.\n'
+  } > "$INTRO_FILE"
+  awk -v start="$INTRO_START" -v end="$INTRO_END" -v introfile="$INTRO_FILE" '
+    index($0, start) == 1 { while ((getline line < introfile) > 0) print line; close(introfile); skipping = 1; next }
+    index($0, end) == 1   { skipping = 0; next }
+    !skipping             { print }
+  ' "$README" > "$README.tmp" && mv "$README.tmp" "$README"
+  rm -f "$INTRO_FILE"
+  echo "Replaced the template README intro with a project intro."
+else
+  echo "warning: README.md has no template-intro markers; left its intro unchanged." >&2
+fi
