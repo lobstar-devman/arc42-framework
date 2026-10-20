@@ -46,21 +46,3 @@ spend less time deciding how to phrase a page from scratch. The
 trade-off is one more document to keep current if MDN revises its
 guidance, and a small upfront cost for new contributors to read the
 guide before writing their first prose page.
-
-## Template
-
-\`\`\`markdown
-# ADR-NNN: <Title>
-
-**Status:** proposed | accepted | superseded by ADR-NNN
-**Date:** YYYY-MM-DD
-
-## Context
-What is the issue that we're seeing that motivates this decision?
-
-## Decision
-What is the change that we're proposing/doing?
-
-## Consequences
-What becomes easier or harder as a result of this change?
-\`\`\`

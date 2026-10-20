@@ -42,6 +42,26 @@ Use the real standard format wherever good open tooling exists. Fall back to a p
 - Jupyter and marimo are **not** part of the documentation backbone. marimo may optionally be used for a standalone interactive artifact (e.g. a DMN decision-table simulator exported to WASM and embedded via iframe) — an enhancement, never the source of truth or the primary deliverable.
 - Hand-authored prose within this framework (Home, Sources of Truth pages, ADR entries, arc42 free-text sections) follows `docs/style-guide.md`, adopted per ADR-001 — the single source of truth for writing conventions, not duplicated here.
 
+## Writing an ADR
+
+ADRs are hand-authored prose, kept in `docs/decisions/index.md`. To add one, append an entry to the end of that page using the block below, then add a matching row (number, title, status, date) to its log table. The template lives here, not on the Decisions page, so it doesn't show on the published site or over the raw endpoint.
+
+```markdown
+### ADR-NNN: <Title>
+
+**Status:** proposed | accepted | superseded by ADR-NNN
+**Date:** YYYY-MM-DD
+
+#### Context
+What is the issue that we're seeing that motivates this decision?
+
+#### Decision
+What is the change that we're proposing/doing?
+
+#### Consequences
+What becomes easier or harder as a result of this change?
+```
+
 ## CI pipeline
 
 On every change to a source-of-truth file, CI:
