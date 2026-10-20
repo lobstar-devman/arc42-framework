@@ -21,6 +21,9 @@ trap 'rm -f "$PUPPETEER_CONFIG"' EXIT
 render_mermaid() {
   local input="$1" output="$2"
   mmdc -i "$input" -o "$output" -p "$PUPPETEER_CONFIG" -b white
+  # Paint flowcharts (all C4 views) as boxes, then arrows, then text. Mermaid's
+  # own order hides arrows behind boxes; other diagram types are left alone.
+  python3 scripts/layer-svg.py "$output" > /dev/null
 }
 
 # The Structurizr CLI release ships as structurizr.sh + lib/*.jar, not a

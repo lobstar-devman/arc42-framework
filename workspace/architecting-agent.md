@@ -29,7 +29,7 @@ Use the real standard format wherever good open tooling exists. Fall back to a p
 
 - **[bpmn.io](https://bpmn.io)** (bpmn-js, dmn-js, cmmn-js) — the modeler and renderer for all BPMN, DMN, and CMMN XML sources. Used both for authoring/editing the XML and for headless export to SVG/PNG in the build pipeline.
 - **Structurizr CLI** — renders C4 diagrams (context/container/component) from Structurizr DSL.
-- **Mermaid CLI (mmdc)** — renders Mermaid text (UML and ERD) to SVG.
+- **Mermaid CLI (mmdc)** — renders Mermaid text (UML and ERD) to SVG. C4 views also go through it, via Structurizr's Mermaid export. `scripts/layer-svg.py` then re-layers each flowchart SVG so it paints as boxes, then arrows, then text, because Mermaid's own order hides arrows behind the boxes they cross. Layout (positions, routing) can't be hand-tuned for Mermaid or C4 diagrams; adjust the source (direction, ordering, grouping) instead.
 - **Redoc / Swagger UI** — renders OpenAPI specs into browsable API documentation.
 
 ## Documentation framework
