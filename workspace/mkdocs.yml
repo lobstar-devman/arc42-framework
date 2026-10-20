@@ -31,8 +31,10 @@ plugins:
   - awesome-pages
 
 # Pan/zoom viewer for generated diagrams (BPMN, C4, Mermaid): drag to pan,
-# +/- or ctrl+wheel to zoom. svg-pan-zoom is loaded from a CDN like the
-# mermaid2 plugin's library; without it diagrams just stay plain images.
+# +/- or ctrl+wheel to zoom, double-click to open the diagram full page
+# (javascripts/diagram-viewer.html, copied to the site as a static file).
+# svg-pan-zoom is loaded from a CDN like the mermaid2 plugin's library;
+# without it diagrams just stay plain images.
 extra_css:
   - stylesheets/diagram-viewer.css
 extra_javascript:

@@ -2,6 +2,7 @@
    Always white: the SVGs are drawn for a light background and are unreadable
    on the dark scheme otherwise. */
 .diagram-viewer {
+  position: relative;
   width: 100%;
   height: 360px;
   margin: 1em 0;
@@ -15,4 +16,48 @@
   display: block;
   width: 100%;
   height: 100%;
+}
+
+/* "Open full page" link. Fixed colours rather than theme ones: it sits on
+   the always-white frame, where the dark scheme's link colour is too faint. */
+.diagram-viewer .diagram-viewer__open {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 2px 8px;
+  border: 1px solid #c5cae9;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #3f51b5;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  text-decoration: none;
+}
+
+.diagram-viewer .diagram-viewer__open:hover,
+.diagram-viewer .diagram-viewer__open:focus {
+  background: #e8eaf6;
+  text-decoration: underline;
+}
+
+/* Standalone full-window page (javascripts/diagram-viewer.html). */
+.diagram-page {
+  margin: 0;
+  background: #fff;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+}
+
+.diagram-page object {
+  position: fixed;
+  inset: 0;
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+
+.diagram-page .diagram-page__error {
+  margin: 0;
+  padding: 2rem;
+  color: #b00020;
 }
