@@ -75,6 +75,24 @@ No diagram or doc page is ever committed as a manually edited artifact — only 
 
 **In local dev, steps 1–3 already run continuously.** `docker compose up` starts an `architecting-toolkit-watch` service that runs `scripts/generate-docs.sh` once, then re-runs it whenever a source-of-truth file changes anywhere except `docs/` itself. `mkdocs serve` (in the `architecting-toolkit` service) picks up the resulting `docs/` changes on its own and live-reloads. So editing a `.dsl`/`.bpmn`/`.mmd`/etc. file while the stack is up regenerates its diagram and re-links its embed automatically, with no manual step — the CI pipeline above isn't only a remote/future concept.
 
+## Committing generated diagrams
+
+Commit a generated diagram only when its source of truth changes in the same commit. Mermaid ER diagrams and BPMN don't render identically twice, so the watcher leaves their SVGs modified even when nothing changed. Before committing, check each modified file under `docs/diagrams/` against its source:
+
+| Diagram | Source of truth |
+|---|---|
+| `c4/*.svg` | `architecture/workspace.dsl` |
+| `mermaid/<name>.svg` | `architecture/<name>.mmd` |
+| `erd/<name>.svg` | `data-model/<name>.mmd` |
+| `bpmn/<name>.svg` | `processes/<name>.bpmn` |
+
+Stage a diagram only if its source is part of the commit. Leave the rest unstaged, and say so when reporting the commit. Don't discard them unless the user asks. There are two exceptions:
+
+- new or deleted diagrams;
+- changes to the renderers (`scripts/generate-docs.sh`, `scripts/layer-svg.py`, the `Dockerfile`), which legitimately change every diagram.
+
+The table repeats the mapping in `scripts/generate-docs.sh`. If the generator gains a new diagram kind (CMMN and DMN have no render step yet), update both.
+
 ## Working rule for each architecture step
 
 When performing an architecture step (e.g. database design, process modeling):
