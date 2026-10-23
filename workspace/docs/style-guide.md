@@ -61,6 +61,31 @@ or "SOT." Keep casing consistent too — "Structurizr DSL," not
 "structurizr dsl" — and reuse the same heading and table structure across
 sibling pages, the way every page under `sources-of-truth/` already does.
 
+## Describe the current state
+
+Write about the system as it's designed, in the present tense. Don't
+narrate how the documentation changed — what was missing, what was
+added, or what "now" applies. Git history records that, and a sentence
+about it stops being true as soon as the change lands. For example,
+write "the platform charges operators for use," not "the system had no
+way to charge for its use."
+
+The same rule applies to an ADR's Context section, following the ADR
+convention that context describes the forces behind a decision as plain
+facts. State the needs and constraints as facts at the decision date,
+not the gap in the design before the ADR was written. Facts about the
+outside world can be in the past tense when they carry their date — for
+example, "App Runner closed to new customers on 30 April 2026."
+
+Avoid words that tie the design to the moment of writing, such as "so
+far," "no longer" and "now." Time in the domain is fine: "shipments
+already registered" describes the business, not the documentation. A
+known gap belongs on the page's status line or under Technical Debt,
+where saying it isn't done yet is the point.
+
+Once an ADR is accepted, don't rewrite it: supersede it with a new ADR
+instead.
+
 ## Structure each page
 
 Open with an introduction that states what the page covers and why the
