@@ -19,7 +19,12 @@ change something, edit the source of truth — see
 - [Sources of Truth](sources-of-truth/index.md) — what format is used for
   what, and where each file lives.
 - [Decisions (ADRs)](decisions/index.md) — the log of architecture
-  decision records.
+  decision records for the production system.
+- [Development and Delivery](delivery/index.md) — how the system is
+  built, checked and run outside production, with its own decision log.
+- [How This Documentation Is Organised](about/structure.md) — what
+  each part of this site covers, and why, with the
+  [Bibliography](about/bibliography.md).
 
 ## For implementation agents
 

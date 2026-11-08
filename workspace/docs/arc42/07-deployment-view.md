@@ -3,6 +3,9 @@
 > **Status:** stub — not yet generated. This page is populated by the CI
 > pipeline from the sources of truth listed below when they exist.
 
+This chapter covers the production deployment. Non-production environments
+are in [Environments](../delivery/environments.md).
+
 ## Infrastructure
 _C4 Deployment diagram — generated from Structurizr DSL deployment
 environments (C4 Level 4)._

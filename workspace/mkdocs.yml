@@ -63,6 +63,9 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Documentation Style Guide: style-guide.md
+  - About this documentation:
+      - How This Documentation Is Organised: about/structure.md
+      - Bibliography: about/bibliography.md
   - Architecture (arc42):
       - "1. Introduction & Goals": arc42/01-introduction-and-goals.md
       - "2. Constraints": arc42/02-constraints.md
@@ -85,3 +88,11 @@ nav:
       - Mermaid (UML/ERD): sources-of-truth/mermaid.md
   - Decisions (ADRs):
       - Overview: decisions/index.md
+  - Development and Delivery:
+      - Overview: delivery/index.md
+      - Development Method: delivery/method.md
+      - Delivery Quality Requirements: delivery/quality.md
+      - Environments: delivery/environments.md
+      - Delivery Risks and Technical Debt: delivery/risks.md
+      - Glossary: delivery/glossary.md
+      - Decisions: delivery/decisions.md

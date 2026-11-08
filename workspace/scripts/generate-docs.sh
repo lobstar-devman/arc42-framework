@@ -109,6 +109,9 @@ for src in apis/*.openapi.yaml; do
 done
 shopt -u nullglob
 
+echo "==> Copying the production decision log (docs/decisions/index.md -> docs/arc42/09-architecture-decisions.md)"
+python3 scripts/copy-decision-log.py
+
 echo "==> Linking embed placeholders to generated diagrams"
 python3 scripts/link-embeds.py
 

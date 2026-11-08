@@ -6,6 +6,7 @@
 A template for architecting a system as a living set of documents. It is a Docker stack plus a repo skeleton, built so that each new system gets its **own independent repo and its own Docker stack**, seeded from this one.
 
 - **Documentation:** an [arc42](https://arc42.org)-structured MkDocs Material site, with C4 diagrams. `workspace/architecting-agent.md` defines the conventions.
+- **Two parts:** the arc42 chapters and the decision log describe only the production system. A separate Development and Delivery section (`workspace/docs/delivery/`) covers how the system is built, checked and run outside production, with its own decision log. The two logs share one ADR number sequence; `workspace/docs/about/structure.md` explains the split.
 - **Sources of truth:** BPMN/CMMN/DMN, Structurizr DSL, OpenAPI, JSON Schema and Mermaid files. Diagrams and pages are generated from them, never hand-edited.
 - **Three containers:** a rendered docs site, a raw-file server for implementation agents, and a watcher that regenerates diagrams when a source changes (see [Run it](#run-it)).
 
